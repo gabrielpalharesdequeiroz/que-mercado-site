@@ -1,0 +1,2 @@
+
+const custom=JSON.parse(localStorage.getItem('qm_posts')||'[]').filter(p=>p.status==='Publicado');const grid=document.getElementById('customPosts');if(grid&&custom.length){grid.innerHTML=custom.map(p=>`<article class="post-card"><div><span>${p.category||'BLOG'}</span><h2>${p.title}</h2><p>${p.excerpt}</p><a href="post.html?id=${encodeURIComponent(p.id)}">Ler artigo ↗</a></div></article>`).join('')}

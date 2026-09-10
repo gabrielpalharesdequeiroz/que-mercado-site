@@ -1,0 +1,9 @@
+﻿.env
+.env.*
+!.env.example
+node_modules/
+.vercel/
+*.log
+Thumbs.db
+Desktop.ini
+.DS_Store
