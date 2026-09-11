@@ -1,5 +1,103 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#050805"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><title>Painel Admin | Que Mercado</title></head><body class="admin-body"><div class="admin-shell"><aside class="admin-sidebar"><img src="assets/que-mercado-logo.png" alt="Que Mercado"><nav><button class="admin-nav active" data-panel="overview">Visão geral</button><button class="admin-nav" data-panel="leads">Leads</button><button class="admin-nav" data-panel="posts">Postagens</button></nav><a href="index.html">Ver site ↗</a><button id="logout">Sair</button></aside><main class="admin-main"><header class="admin-top"><div><small>QUE MERCADO · ADMIN</small><h1 id="adminTitle">Visão geral</h1></div><span class="demo-badge">PROTÓTIPO LOCAL</span></header>
-<section class="admin-panel active" data-panel-content="overview"><div class="admin-stats"><article><span>Leads</span><strong id="statLeads">0</strong><small>capturados neste navegador</small></article><article><span>Posts</span><strong id="statPosts">3</strong><small>publicados + rascunhos locais</small></article><article><span>Conversão</span><strong>—</strong><small>entra com analytics / Supabase</small></article></div><div class="admin-card"><div class="admin-card-head"><h2>Leads recentes</h2><button class="text-button" data-open-panel="leads">Ver todos</button></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cidade</th><th>Investimento</th><th>Status</th></tr></thead><tbody id="overviewLeads"></tbody></table></div></div></section>
-<section class="admin-panel" data-panel-content="leads"><div class="admin-card"><div class="admin-card-head"><div><h2>Leads</h2><p>Os formulários da landing salvam os registros localmente neste protótipo.</p></div><button id="exportLeads" class="btn btn-dark btn-sm">Exportar CSV</button></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Nome</th><th>WhatsApp</th><th>E-mail</th><th>Cidade</th><th>Investimento</th><th>Prazo</th><th>Status</th></tr></thead><tbody id="leadsTable"></tbody></table></div></div></section>
-<section class="admin-panel" data-panel-content="posts"><div class="admin-grid"><div class="admin-card"><div class="admin-card-head"><div><h2>Postagens</h2><p>Os três conteúdos atuais já estão cadastrados. Novos posts ficam no localStorage até o Supabase entrar.</p></div></div><div id="postsList" class="posts-admin-list"></div></div><div class="admin-card editor-card"><h2>Nova postagem</h2><form id="postForm"><label>Título<input name="title" required></label><label>Categoria<input name="category" placeholder="Ex.: Franquia"></label><label>Resumo<textarea name="excerpt" rows="3" required></textarea></label><label>Conteúdo<textarea name="content" rows="8" required></textarea></label><label>Status<select name="status"><option>Rascunho</option><option>Publicado</option></select></label><button class="btn btn-primary btn-full">Salvar postagem</button></form></div></div></section>
-</main></div><script src="admin.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050805">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Painel Admin | Que Mercado</title>
+  </head>
+  <body class="admin-body">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <img src="assets/que-mercado-logo.png" alt="Que Mercado">
+        <nav aria-label="Navegação do painel">
+          <button class="admin-nav active" data-panel="overview">Visão geral</button>
+          <button class="admin-nav" data-panel="leads">Leads</button>
+          <button class="admin-nav" data-panel="content">Conteúdo</button>
+        </nav>
+        <a href="index.html" target="_blank" rel="noopener">Ver site ↗</a>
+        <button id="logout">Sair</button>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-top">
+          <div><small>QUE MERCADO · ADMIN</small><h1 id="adminTitle">Visão geral</h1></div>
+          <span class="demo-badge" id="connectionBadge">CONECTANDO</span>
+        </header>
+
+        <div class="setup-alert admin-setup-alert" id="adminSetupAlert" hidden>
+          <strong>Supabase ainda não configurado.</strong> O editor está visível para revisão, mas a publicação ficará bloqueada até você preencher <code>supabase-config.js</code> e executar <code>supabase-schema.sql</code>.
+        </div>
+
+        <section class="admin-panel active" data-panel-content="overview">
+          <div class="admin-stats">
+            <article><span>Leads</span><strong id="statLeads">0</strong><small>capturados neste navegador</small></article>
+            <article><span>Artigos</span><strong id="statPosts">0</strong><small>publicados no blog</small></article>
+            <article><span>Conteúdo</span><strong id="statContent">0</strong><small>campos publicados na home</small></article>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-head"><h2>Leads recentes</h2><button class="text-button" data-open-panel="leads">Ver todos</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cidade</th><th>Investimento</th><th>Status</th></tr></thead><tbody id="overviewLeads"></tbody></table></div>
+          </div>
+        </section>
+
+        <section class="admin-panel" data-panel-content="leads">
+          <div class="admin-card">
+            <div class="admin-card-head"><div><h2>Leads</h2><p>Os formulários da landing continuam disponíveis para integração com a base de leads.</p></div><button id="exportLeads" class="btn btn-dark btn-sm">Exportar CSV</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Data</th><th>Nome</th><th>WhatsApp</th><th>E-mail</th><th>Cidade</th><th>Investimento</th><th>Prazo</th><th>Status</th></tr></thead><tbody id="leadsTable"></tbody></table></div>
+          </div>
+        </section>
+
+        <section class="admin-panel" data-panel-content="content">
+          <div class="content-module-tabs" role="tablist" aria-label="Módulos de conteúdo">
+            <button class="content-module-tab active" data-content-module="site" role="tab" aria-selected="true">Página inicial</button>
+            <button class="content-module-tab" data-content-module="blog" role="tab" aria-selected="false">Blog</button>
+          </div>
+
+          <div class="content-module active" data-content-module-panel="site">
+            <div class="content-editor-layout">
+              <aside class="content-sections" id="contentSections" aria-label="Seções da página"></aside>
+              <section class="admin-card editor-card site-editor-card">
+                <div class="admin-card-head">
+                  <div><span class="editor-eyebrow">PÁGINA INICIAL</span><h2 id="siteEditorTitle">Conteúdo</h2><p id="siteEditorDescription"></p></div>
+                  <a class="text-link" href="index.html" target="_blank" rel="noopener">Abrir página ↗</a>
+                </div>
+                <form id="siteContentForm"><div id="siteFields" class="site-fields"></div><div class="publish-bar"><span id="sitePublishStatus" aria-live="polite">As alterações só ficam públicas ao clicar em Publicar.</span><button class="btn btn-primary" id="publishSite" type="submit">Publicar alterações</button></div></form>
+              </section>
+            </div>
+          </div>
+
+          <div class="content-module" data-content-module-panel="blog">
+            <div class="admin-grid blog-editor-grid">
+              <div class="admin-card">
+                <div class="admin-card-head"><div><span class="editor-eyebrow">BLOG</span><h2>Artigos</h2><p>Edite um conteúdo existente ou publique um novo artigo.</p></div><button class="btn btn-dark btn-sm" id="newPost" type="button">Novo artigo</button></div>
+                <div id="postsList" class="posts-admin-list"></div>
+              </div>
+              <div class="admin-card editor-card">
+                <div class="admin-card-head"><div><span class="editor-eyebrow">EDITOR</span><h2 id="postEditorTitle">Novo artigo</h2></div></div>
+                <form id="postForm">
+                  <input type="hidden" name="id">
+                  <label>Título<input name="title" required></label>
+                  <label>Slug<input name="slug" required placeholder="titulo-do-artigo"><small>Usado no endereço do artigo.</small></label>
+                  <div class="form-row"><label>Categoria<input name="category" placeholder="Ex.: Franquia" required></label><label>Imagem de capa (URL)<input name="cover_url" placeholder="assets/imagem.webp"></label></div>
+                  <label>Resumo<textarea name="excerpt" rows="3" required></textarea></label>
+                  <label>Conteúdo<textarea name="content" rows="12" required></textarea><small>Separe os parágrafos com uma linha em branco.</small></label>
+                  <div class="publish-bar"><span id="postPublishStatus" aria-live="polite">O artigo ficará disponível para todos ao publicar.</span><button class="btn btn-primary" id="publishPost" type="submit">Publicar artigo</button></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="content-schema.js"></script>
+    <script src="cms.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
