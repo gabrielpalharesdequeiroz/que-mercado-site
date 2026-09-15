@@ -7,6 +7,13 @@ Páginas principais:
 - admin-login.html: autenticação administrativa com Supabase Auth
 - admin.html: visão geral, leads e editor de conteúdo da página inicial e do blog
 
+IDENTIDADE VISUAL
+
+- Verde oficial: #199852
+- Laranja oficial: #eb611f
+- Logo horizontal oficial: assets/que-mercado-logo-horizontal.png
+- A seção “Indicadores do negócio” faz parte da narrativa da home e seus números podem ser atualizados pelo editor de conteúdo.
+
 CONFIGURAÇÃO DO SUPABASE
 
 1. Crie um projeto no Supabase.
